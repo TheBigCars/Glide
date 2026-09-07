@@ -3,10 +3,16 @@ name: Build Glide EXE
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - README.md
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: glide-latest-release
+  cancel-in-progress: true
 
 jobs:
   build-and-release:
