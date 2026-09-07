@@ -1,0 +1,31 @@
+name: Build Glide EXE
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Glide
+        shell: powershell
+        run: |
+          .\build.ps1
+          if (-not (Test-Path .\Glide.exe)) { throw 'Glide.exe was not created.' }
+
+      - name: Publish latest release
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag --yes 2>$null
+          gh release create latest .\Glide.exe --target $env:GITHUB_SHA --title "Glide - Latest Build" --notes "Latest Windows build of Glide. Download Glide.exe below and run it on Windows 11."
