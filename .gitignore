@@ -1,10 +1,16 @@
+# Build outputs
+dist/
+bin/
+obj/
 *.exe
 *.pdb
 *.TMP
-obj/
-bin/
+
+# IDE / local files
 *.user
 *.suo
+
+# Generated test/render output
 *-preview.png
 *-check.txt
 
