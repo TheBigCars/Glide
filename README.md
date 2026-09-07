@@ -2,6 +2,14 @@
 
 Minimal Windows 11 application for the regular Logitech PRO X SUPERLIGHT 2.
 
+## Download
+
+### [Download Glide.exe](https://github.com/TheBigCars/Glide/releases/latest/download/Glide.exe)
+
+That link always points to the newest Windows build. Download **Glide.exe**, then double-click it to run Glide.
+
+You can also open the [Releases page](https://github.com/TheBigCars/Glide/releases/latest) if you want to see the latest published build first.
+
 ## Open and use
 
 Double-click **Glide.exe**. Drag the slider or type a DPI, then choose **Save DPI**. Enter also saves a valid edit. Unsupported typed values show the nearest supported value without silently changing your entry. DPI changes apply to X and Y together. Esc resets unsaved edits.
