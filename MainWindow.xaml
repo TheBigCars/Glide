@@ -1,0 +1,207 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Glide" Width="980" Height="680" MinWidth="820" MinHeight="600"
+        WindowStartupLocation="CenterScreen" Background="#101112" Foreground="#EDEEEF"
+        FontFamily="Segoe UI" FontSize="13" ResizeMode="CanResize" UseLayoutRounding="True">
+  <Window.Resources>
+    <SolidColorBrush x:Key="AccentBrush" Color="#AFDCCE"/>
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#1B2925"/>
+    <ControlTemplate x:Key="ScrollPage" TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate>
+    <Style TargetType="ScrollBar">
+      <Setter Property="Width" Value="8"/><Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+        <Grid Background="Transparent">
+          <Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+            <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Template="{StaticResource ScrollPage}"/></Track.DecreaseRepeatButton>
+            <Track.Thumb><Thumb MinHeight="24"><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#3C4449" CornerRadius="3" Margin="1"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+            <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Template="{StaticResource ScrollPage}"/></Track.IncreaseRepeatButton>
+          </Track>
+        </Grid>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="Button">
+      <Setter Property="Cursor" Value="Hand"/><Setter Property="Padding" Value="13,8"/>
+      <Setter Property="Background" Value="#EEEEEE"/><Setter Property="Foreground" Value="#151515"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+        <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+          <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.8"/></Trigger>
+          <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Surface" Property="BorderThickness" Value="1"/><Setter TargetName="Surface" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/></Trigger>
+          <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.3"/></Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="Secondary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Background" Value="#272A2C"/><Setter Property="Foreground" Value="#DEDFE0"/>
+    </Style>
+    <Style TargetType="TextBox">
+      <Setter Property="Background" Value="#1C1E20"/><Setter Property="Foreground" Value="#F1F2F3"/>
+      <Setter Property="BorderBrush" Value="#373A3D"/><Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="10,8"/><Setter Property="CaretBrush" Value="White"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="ComboBox">
+      <Setter Property="Foreground" Value="#EEEEEE"/><Setter Property="Background" Value="#202224"/>
+      <Setter Property="Padding" Value="12,10"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
+        <Grid>
+          <ToggleButton x:Name="Toggle" Focusable="False" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+            <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="#202224" BorderBrush="#383B3E" BorderThickness="1" CornerRadius="5"><TextBlock Text="⌄" HorizontalAlignment="Right" Margin="0,0,12,0" Foreground="#D5D8DA" VerticalAlignment="Center"/></Border></ControlTemplate></ToggleButton.Template>
+          </ToggleButton>
+          <ContentPresenter IsHitTestVisible="False" Margin="12,10,30,10" Content="{TemplateBinding SelectionBoxItem}"/>
+          <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False">
+            <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" Background="#202224" BorderBrush="#3A3D40" BorderThickness="1" Padding="4">
+              <ScrollViewer MaxHeight="220"><StackPanel IsItemsHost="True"/></ScrollViewer>
+            </Border>
+          </Popup>
+        </Grid>
+        <ControlTemplate.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.4"/></Trigger></ControlTemplate.Triggers>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Foreground" Value="#EEEEEE"/><Setter Property="Padding" Value="10,8"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBoxItem"><Border x:Name="Item" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsHighlighted" Value="True"><Setter TargetName="Item" Property="Background" Value="#373C40"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="TabControl"><Setter Property="Background" Value="Transparent"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Foreground" Value="#EDEEEF"/></Style>
+    <Style TargetType="TabItem">
+      <Setter Property="Foreground" Value="#83888C"/><Setter Property="Padding" Value="0,10,24,13"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TabItem">
+        <Border x:Name="TabBorder" BorderThickness="0,0,0,1" BorderBrush="Transparent" Margin="0,0,20,18" Padding="0,8,0,12"><ContentPresenter ContentSource="Header"/></Border>
+        <ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter Property="Foreground" Value="#F4F5F5"/><Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/></Trigger></ControlTemplate.Triggers>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="Rail" TargetType="RepeatButton">
+      <Setter Property="Focusable" Value="False"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="RepeatButton"><Border Height="3" Background="{TemplateBinding Background}" CornerRadius="1.5"/></ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="Slider">
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Slider">
+        <Grid Background="Transparent" Height="32">
+          <Track x:Name="PART_Track">
+            <Track.DecreaseRepeatButton><RepeatButton Style="{StaticResource Rail}" Background="{DynamicResource AccentBrush}" Command="Slider.DecreaseLarge"/></Track.DecreaseRepeatButton>
+            <Track.Thumb><Thumb Width="16" Height="16"><Thumb.Template><ControlTemplate TargetType="Thumb"><Ellipse Fill="#F4F6F5" Stroke="#101112"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+            <Track.IncreaseRepeatButton><RepeatButton Style="{StaticResource Rail}" Background="#3A3D3F" Command="Slider.IncreaseLarge"/></Track.IncreaseRepeatButton>
+          </Track>
+        </Grid>
+        <ControlTemplate.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.35"/></Trigger></ControlTemplate.Triggers>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="Switch" TargetType="CheckBox">
+      <Setter Property="Cursor" Value="Hand"/><Setter Property="Foreground" Value="#DCE0E1"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox">
+        <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ContentPresenter VerticalAlignment="Center"/><Border x:Name="Track" Grid.Column="1" Width="38" Height="20" CornerRadius="10" Background="#34383A" Margin="12,0,0,0"><Ellipse x:Name="Knob" Width="14" Height="14" Fill="#D6DADB" HorizontalAlignment="Left" Margin="3,0,0,0"/></Border></Grid>
+        <ControlTemplate.Triggers><Trigger Property="IsChecked" Value="True"><Setter TargetName="Track" Property="Background" Value="{DynamicResource AccentBrush}"/><Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/><Setter TargetName="Knob" Property="Margin" Value="0,0,3,0"/><Setter TargetName="Knob" Property="Fill" Value="#111314"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+  </Window.Resources>
+  <Grid x:Name="Root" Margin="22,17,22,15" FocusManager.FocusedElement="{Binding ElementName=RefreshButton}">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Grid Margin="0,0,0,15">
+      <StackPanel Orientation="Horizontal">
+        <Border Width="36" Height="36" CornerRadius="9" Background="{DynamicResource AccentSoftBrush}" BorderBrush="#30403B" BorderThickness="1" Margin="0,0,11,0">
+          <Viewbox Width="18" Height="24" Stretch="Uniform"><Canvas Width="18" Height="24"><Path Data="M9,1 C4.7,1 2.2,4.1 2,8.6 L1.5,15.7 C1.2,20.4 4.1,23 9,23 C13.9,23 16.8,20.4 16.5,15.7 L16,8.6 C15.8,4.1 13.3,1 9,1 Z" Fill="Transparent" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.5"/><Path Data="M9,1 L9,7.4 M2.2,8.5 L7.8,8.8 L7.8,2.1 M10.2,2.1 L10.2,8.8 L15.8,8.5" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.1"/><Rectangle Canvas.Left="7.2" Canvas.Top="3.2" Width="3.6" Height="5.3" RadiusX="1.7" RadiusY="1.7" Fill="#111314" Stroke="{DynamicResource AccentBrush}" StrokeThickness="0.8"/></Canvas></Viewbox>
+        </Border>
+        <StackPanel VerticalAlignment="Center"><TextBlock Text="G L I D E" FontFamily="Bahnschrift" FontSize="18" FontWeight="Bold"/><TextBlock Text="DEVICE CONTROL" Foreground="#747C80" FontFamily="Bahnschrift" FontSize="9" Margin="1,2,0,0"/></StackPanel>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"><Button x:Name="RefreshButton" Content="↻" Style="{StaticResource Secondary}" Padding="10,5" FontSize="18" ToolTip="Refresh device" AutomationProperties.Name="Refresh device"/><Button x:Name="SettingsButton" Content="⚙" Style="{StaticResource Secondary}" Padding="9,5" FontSize="17" Margin="8,0,0,0" ToolTip="Settings"/></StackPanel>
+    </Grid>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="255"/><ColumnDefinition Width="22"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+      <Border Background="#151719" BorderBrush="#272A2C" BorderThickness="1" CornerRadius="12">
+        <Grid Margin="16">
+          <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+          <StackPanel><TextBlock x:Name="DeviceNameText" Text="Detecting mouse…" FontSize="11" Foreground="#C9CED1" FontWeight="SemiBold"/><TextBlock x:Name="ConnectionText" Text="Connecting…" Foreground="#7F888D" FontSize="12" Margin="0,5,0,0"/></StackPanel>
+          <Grid x:Name="MouseScene" Grid.Row="1" Background="Transparent">
+            <Viewbox x:Name="MouseArt" Stretch="Uniform" Margin="38,10,38,18" RenderTransformOrigin="0.5,0.5">
+              <Viewbox.RenderTransform><TransformGroup><ScaleTransform x:Name="MouseScale" ScaleX="1" ScaleY="1"/><TranslateTransform x:Name="MouseFloat"/></TransformGroup></Viewbox.RenderTransform>
+              <Grid Width="220" Height="390">
+                <Image x:Name="MouseProductImage" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Ellipse x:Name="MouseLed" Width="1" Height="1" Opacity="0"/>
+              </Grid>
+            </Viewbox>
+          </Grid>
+          <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+            <StackPanel><TextBlock x:Name="BatteryText" Text="—" FontSize="27" FontWeight="SemiBold"/><TextBlock x:Name="ChargeText" Text="Reading battery…" Foreground="#899196" FontSize="12" Margin="0,4,0,0"/></StackPanel>
+            <TextBlock x:Name="ConnectionTypeText" Grid.Column="1" Text="—" Foreground="#657077" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="10"/>
+          </Grid>
+        </Grid>
+      </Border>
+      <TabControl x:Name="SettingsTabs" Grid.Column="2">
+        <TabItem Header="Mouse">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,2,4,0">
+            <Border Background="#151719" BorderBrush="#292C2E" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,0,0,10">
+              <StackPanel>
+                <Grid><StackPanel><TextBlock Text="Sensitivity" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="Stored on the mouse" Foreground="#7E878B" FontSize="11" Margin="0,3,0,0"/></StackPanel><StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"><TextBox x:Name="DpiInput" Width="76" Padding="8,5" TextAlignment="Right" FontSize="17" IsEnabled="False" AutomationProperties.Name="DPI value"/><TextBlock Text="DPI" Foreground="#818A8E" FontSize="10" Margin="7,0,0,0" VerticalAlignment="Center"/></StackPanel></Grid>
+                <Slider x:Name="DpiSlider" Margin="0,10,0,0" Minimum="0" Maximum="1" IsEnabled="False" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="10" AutomationProperties.Name="DPI slider"/>
+                <Grid Margin="0,-2,0,6"><TextBlock x:Name="MinText" Foreground="#667075" FontSize="10"/><TextBlock x:Name="MaxText" Foreground="#667075" FontSize="10" HorizontalAlignment="Right"/></Grid>
+                <Button x:Name="SaveButton" Content="Save DPI" HorizontalAlignment="Right" IsEnabled="False"/>
+              </StackPanel>
+            </Border>
+            <Border Background="#151719" BorderBrush="#292C2E" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,0,0,10">
+              <Grid><StackPanel VerticalAlignment="Center"><TextBlock Text="Wireless polling rate" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="Active onboard profile" Foreground="#7E878B" FontSize="11" Margin="0,3,0,0"/></StackPanel><StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"><ComboBox x:Name="PollingPicker" Width="112" Padding="10,7" IsEnabled="False"><ComboBoxItem Content="125 Hz" Tag="0"/><ComboBoxItem Content="250 Hz" Tag="1"/><ComboBoxItem Content="500 Hz" Tag="2"/><ComboBoxItem Content="1000 Hz" Tag="3"/><ComboBoxItem Content="2000 Hz" Tag="4"/><ComboBoxItem Content="4000 Hz" Tag="5"/><ComboBoxItem Content="8000 Hz" Tag="6"/></ComboBox><Button x:Name="PollingSaveButton" Content="Save" Margin="8,0,0,0" IsEnabled="False"/></StackPanel></Grid>
+            </Border>
+            <Border Background="#151719" BorderBrush="#292C2E" BorderThickness="1" CornerRadius="10" Padding="16">
+              <StackPanel>
+                <Grid><StackPanel><TextBlock Text="Onboard profiles" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="Available without Glide running" Foreground="#7E878B" FontSize="11" Margin="0,3,0,0"/></StackPanel><TextBlock x:Name="ProfileText" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11"/></Grid>
+                <Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ComboBox x:Name="ProfilePicker" Padding="10,7" IsEnabled="False" AutomationProperties.Name="Onboard profile"/><Button x:Name="ActivateButton" Grid.Column="2" Content="Use" Style="{StaticResource Secondary}" IsEnabled="False"/></Grid>
+                <Grid Margin="0,9,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox x:Name="ProfileNameInput" Padding="9,6" MaxLength="23" IsEnabled="False" AutomationProperties.Name="Active profile name"/><Button x:Name="RenameButton" Grid.Column="2" Content="Rename" Style="{StaticResource Secondary}" IsEnabled="False"/></Grid>
+              </StackPanel>
+            </Border>
+            <Border Background="#151719" BorderBrush="#292C2E" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,10,0,0">
+              <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Gaming Surface Mode" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="Optimizes tracking for a calibrated gaming surface." Foreground="#7E878B" FontSize="11" Margin="0,3,0,0"/><TextBlock Text="Unavailable until this model-specific command can be verified safely." Foreground="#777F83" FontSize="10" Margin="0,8,12,0" TextWrapping="Wrap"/></StackPanel><CheckBox x:Name="SurfaceToggle" Grid.Column="1" Style="{StaticResource Switch}" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Center" AutomationProperties.Name="Gaming Surface Mode"/></Grid>
+            </Border>
+          </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Firmware">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,8,0,0">
+            <TextBlock Text="Firmware" FontSize="20" FontWeight="SemiBold"/>
+            <TextBlock Text="Check official Logitech release notes on demand." Foreground="#828B90" FontSize="12" Margin="0,6,0,24" TextWrapping="Wrap"/>
+            <Border Background="#191C1E" CornerRadius="8" Padding="18">
+              <StackPanel>
+                <Grid><TextBlock Text="Detected device" Foreground="#929CA2"/><TextBlock x:Name="FirmwareDeviceText" Text="Not detected" HorizontalAlignment="Right"/></Grid>
+                <Border Height="1" Background="#2D3336" Margin="0,15"/>
+                <Grid><TextBlock Text="Current firmware" Foreground="#929CA2"/><TextBlock x:Name="FirmwareText" Text="Not read" HorizontalAlignment="Right" FontSize="17"/></Grid>
+                <Border Height="1" Background="#2D3336" Margin="0,15"/>
+                <Grid><TextBlock Text="Latest in release notes" Foreground="#929CA2"/><TextBlock x:Name="PublishedText" Text="Not checked" HorizontalAlignment="Right" FontSize="15"/></Grid>
+              </StackPanel>
+            </Border>
+            <TextBlock x:Name="FirmwareStatus" Text="No automatic update checks." TextWrapping="Wrap" Foreground="#ACCDBF" Margin="0,17,0,6"/>
+            <TextBlock x:Name="CheckedText" Text="" Foreground="#728087" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,18"/>
+            <Button x:Name="CheckUpdatesButton" Content="Check for updates" HorizontalAlignment="Left" IsEnabled="False"/>
+            <Button x:Name="UpdateFirmwareButton" Content="Update firmware" HorizontalAlignment="Left" IsEnabled="False" Margin="0,10,0,0"/>
+            <TextBlock x:Name="UpdateProgressText" Text="Direct update availability is checked per exact model, VID/PID, battery level, package, and protocol." Foreground="#777F83" FontSize="11" TextWrapping="Wrap" Margin="0,10,0,0"/>
+            <Border Height="1" Background="#2A2E31" Margin="0,24"/>
+            <TextBlock Text="Installing firmware" FontSize="15"/>
+            <TextBlock Text="Direct firmware installation is not supported here yet. Logitech G HUB is the verified update route for this mouse." TextWrapping="Wrap" Foreground="#929CA2" Margin="0,8,0,16" LineHeight="20"/>
+            <Button x:Name="OfficialUpdaterButton" Content="Official Logitech update page ↗" HorizontalAlignment="Left" Style="{StaticResource Secondary}"/>
+            <TextBlock Text="Release notes may lag staged releases. A matching version is not a guarantee that no newer firmware exists." Foreground="#717D83" FontSize="11" TextWrapping="Wrap" Margin="0,16,0,0"/>
+          </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+        <TabItem Header="" Width="0" Padding="0" Margin="0" IsTabStop="False">
+          <StackPanel Margin="0,8,0,0">
+            <TextBlock Text="Appearance" FontSize="20" FontWeight="SemiBold"/>
+            <TextBlock Text="Personalize Glide. These choices never contact the mouse." Foreground="#828B90" FontSize="12" Margin="0,6,0,24"/>
+            <TextBlock Text="Accent color" Foreground="#959FA5" Margin="0,0,0,7"/>
+            <ComboBox x:Name="ThemePicker"><ComboBoxItem Content="Mint"/><ComboBoxItem Content="Ocean"/><ComboBoxItem Content="Violet"/><ComboBoxItem Content="Amber"/><ComboBoxItem Content="Pink"/><ComboBoxItem Content="Red"/></ComboBox>
+            <TextBlock Text="Font" Foreground="#959FA5" Margin="0,20,0,7"/>
+            <ComboBox x:Name="FontPicker"/>
+            <TextBlock Text="Motion" Foreground="#959FA5" Margin="0,20,0,7"/>
+            <CheckBox x:Name="AnimateToggle" Style="{StaticResource Switch}" Content="Animate mouse illustration" IsChecked="True" AutomationProperties.Name="Animate mouse"/>
+          </StackPanel>
+        </TabItem>
+      </TabControl>
+    </Grid>
+    <Grid Grid.Row="2" Margin="0,10,0,0">
+      <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <TextBlock x:Name="StatusText" Text="Reading mouse…" Foreground="#929DA3" FontSize="11" TextWrapping="Wrap" Margin="0,0,20,0" VerticalAlignment="Center"/>
+      <TextBlock x:Name="ReadTimeText" Grid.Column="1" Text="On-demand reads · fully exits on close" Foreground="#637078" FontSize="11" VerticalAlignment="Center"/>
+    </Grid>
+  </Grid>
+</Window>
