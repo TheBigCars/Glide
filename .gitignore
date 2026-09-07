@@ -1,7 +1,13 @@
 *.exe
-*.bin
-backups/
+*.pdb
+*.TMP
 obj/
 bin/
 *.user
 *.suo
+*-preview.png
+*-check.txt
+
+# Local device profile backups
+backups/
+*.bin
